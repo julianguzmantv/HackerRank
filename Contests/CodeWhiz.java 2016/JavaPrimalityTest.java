@@ -52,40 +52,31 @@ Sample Output
 */
 
 import java.io.*;
-import java.util.*;
-import java.text.*;
 import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-public class JavaPrimalityTest
-{
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-	public static void main(String[] args) 
-	{
-        Scanner sc = new Scanner(System.in);
-        int bitSetSize = sc.nextInt();
-        int numOperations = sc.nextInt();
-        BitSet[] bitSetArray = new BitSet[2];
-        bitSetArray[0] = new BitSet(bitSetSize);
-        bitSetArray[1] = new BitSet(bitSetSize);
-        sc.nextLine();
-        for(int i = 0;i < numOperations; i++)
-        {
-            String[] opArray = sc.nextLine().split(" ");
-            switch(opArray[0]){
-                case "AND": bitSetArray[Integer.parseInt(opArray[1])-1].and(bitSetArray[Integer.parseInt(opArray[2])-1]);
-                break;
-                case "OR": bitSetArray[Integer.parseInt(opArray[1])-1].or(bitSetArray[Integer.parseInt(opArray[2])-1]);
-                break;
-                case "XOR": bitSetArray[Integer.parseInt(opArray[1])-1].xor(bitSetArray[Integer.parseInt(opArray[2])-1]);
-                break;
-                case "FLIP": bitSetArray[Integer.parseInt(opArray[1])-1].flip(Integer.parseInt(opArray[2]));
-                            break;
-                case "SET": bitSetArray[Integer.parseInt(opArray[1])-1].set(Integer.parseInt(opArray[2]));
-                            break;
-            }
-            System.out.println(bitSetArray[0].cardinality() + " " + bitSetArray[1].cardinality());
-            
+        String n = bufferedReader.readLine();
+
+        bufferedReader.close();
+        
+        BigInteger bigInteger = new BigInteger(n);
+        
+        if (bigInteger.isProbablePrime(10)) {
+            System.out.println("prime");
+        } else {
+            System.out.println("not prime");
         }
     }
 }
