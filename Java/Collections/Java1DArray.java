@@ -48,29 +48,62 @@ Assume that the index is 0 based.
 
 import java.io.*;
 import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
 
-public class Java1DArray {
+public class Solution {
 
-    public static void main(String[] args) {
-       
-        Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
-        int[]numbers = new int[num];
-        for(int i = 0;i<num;i++){
-            numbers[i]=sc.nextInt();
-        }
-        int count = 0;
-        for(int i = 0;i<num;i++){
-            int sum = numbers[i];
-            if(sum<0) count++;
-            for(int j = i+1;j<num;j++){
-                sum+=numbers[j];
-                if(sum<0) count++;
+    public static boolean canWin(int leap, int[] game) {
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[game.length];
+        
+        queue.offer(0);
+        visited[0] = true;
+        
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            
+            // Check if we can win from current position
+            if (current + leap >= game.length || current == game.length - 1) {
+                return true;
+            }
+            
+            // Try moving forward by 1
+            if (current + 1 < game.length && game[current + 1] == 0 && !visited[current + 1]) {
+                queue.offer(current + 1);
+                visited[current + 1] = true;
+            }
+            
+            // Try leaping forward
+            if (current + leap < game.length && game[current + leap] == 0 && !visited[current + leap]) {
+                queue.offer(current + leap);
+                visited[current + leap] = true;
+            }
+            
+            // Try moving backward by 1
+            if (current - 1 >= 0 && game[current - 1] == 0 && !visited[current - 1]) {
+                queue.offer(current - 1);
+                visited[current - 1] = true;
             }
         }
-        System.out.println(count);
+        
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int q = scanner.nextInt();
+        
+        while (q-- > 0) {
+            int n = scanner.nextInt();
+            int leap = scanner.nextInt();
+            
+            int[] game = new int[n];
+            for (int i = 0; i < n; i++) {
+                game[i] = scanner.nextInt();
+            }
+            
+            System.out.println(canWin(leap, game) ? "YES" : "NO");
+        }
+        
+        scanner.close();
     }
 }
