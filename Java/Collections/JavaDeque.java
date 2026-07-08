@@ -44,30 +44,51 @@ Sample Output
 
 */
 
+import java.io.*;
 import java.util.*;
-public class test {
-   public static void main(String[] args) {
-            
-       Scanner in = new Scanner(System.in);
-       Deque deque = new ArrayDeque<Integer>();
-       int n = in.nextInt();
-       int m = in.nextInt();
-       int maxUnique = 0;
-       for (int i = 0; i < n; i++) {
-            int num = in.nextInt();
-            if(i == 0){
-                deque.add(num);  
-                maxUnique++;
-            }else{
-                if(deque.size() == m){
-                    deque.removeFirst();
-                }
-                if(!deque.contains(num) && maxUnique<m){
-                    maxUnique++;
-                }
-                deque.addLast(num);
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        int n = scanner.nextInt();
+        int k = scanner.nextInt();
+        
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+        
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+        
+        Deque<Integer> deque = new ArrayDeque<>();
+        
+        int maxUnique = 0;
+        
+        for (int i = 0; i < k; i++) {
+            deque.addLast(arr[i]);
+            frequencyMap.put(arr[i], frequencyMap.getOrDefault(arr[i], 0) + 1);
+        }
+        
+        maxUnique = frequencyMap.size();
+        
+        for (int i = k; i < n; i++) {
+            int removed = deque.removeFirst();
+            frequencyMap.put(removed, frequencyMap.get(removed) - 1);
+            if (frequencyMap.get(removed) == 0) {
+                frequencyMap.remove(removed);
             }
-       }
-       System.out.println(""+maxUnique);
+            
+            int added = arr[i];
+            deque.addLast(added);
+            frequencyMap.put(added, frequencyMap.getOrDefault(added, 0) + 1);
+            
+            maxUnique = Math.max(maxUnique, frequencyMap.size());
+        }
+        
+        System.out.println(maxUnique);
+        
+        scanner.close();
     }
 }
